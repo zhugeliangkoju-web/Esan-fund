@@ -1,0 +1,288 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+  .fund-header { padding: 1.5rem 0 1rem; border-bottom: 0.5px solid var(--color-border-tertiary); margin-bottom: 1.5rem; }
+  .fund-name { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
+  .fund-sub { font-size: 13px; color: var(--color-text-secondary); margin-top: 4px; }
+  .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
+  .metric-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 1rem; }
+  .metric-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 6px; }
+  .metric-value { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
+  .metric-change { font-size: 12px; margin-top: 4px; }
+  .up { color: #1D9E75; } .down { color: #E24B4A; }
+  .section-title { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 12px; }
+  .two-col { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 16px; margin-bottom: 1.5rem; }
+  .card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; }
+  .legend-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 13px; }
+  .legend-row:last-child { border-bottom: none; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; margin-right: 8px; flex-shrink: 0; }
+  .legend-name { display: flex; align-items: center; color: var(--color-text-primary); flex: 1; }
+  .legend-pct { font-weight: 500; color: var(--color-text-primary); }
+  .legend-val { color: var(--color-text-secondary); font-size: 12px; margin-left: 8px; }
+  .holder-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .holder-row:last-child { border-bottom: none; }
+  .holder-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; flex-shrink: 0; margin-right: 10px; }
+  .holder-info { flex: 1; }
+  .holder-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+  .holder-units { font-size: 12px; color: var(--color-text-secondary); }
+  .holder-value { text-align: right; }
+  .holder-amount { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+  .holder-pct { font-size: 12px; color: var(--color-text-secondary); }
+  .perf-bar-wrap { margin-bottom: 12px; }
+  .perf-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
+  .perf-track { background: var(--color-background-secondary); border-radius: 4px; height: 8px; overflow: hidden; }
+  .perf-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+  .nav-table { width: 100%; font-size: 13px; border-collapse: collapse; }
+  .nav-table th { text-align: left; color: var(--color-text-secondary); font-weight: 400; padding: 6px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .nav-table td { padding: 8px 0; border-bottom: 0.5px solid var(--color-border-tertiary); color: var(--color-text-primary); }
+  .nav-table tr:last-child td { border-bottom: none; }
+  .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: var(--border-radius-md); font-weight: 500; }
+  .badge-up { background: #E1F5EE; color: #0F6E56; }
+  .badge-down { background: #FCEBEB; color: #A32D2D; }
+  @media (max-width: 520px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+
+<h2 class="sr-only">แดชบอร์ดกองทุน Alpha Growth Fund — ข้อมูลราคา NAV, สัดส่วนการลงทุน, และผู้ถือหน่วยลงทุน</h2>
+
+<div class="fund-header">
+  <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+    <div>
+      <div class="fund-name">Alpha Growth Fund</div>
+      <div class="fund-sub">กองทุนส่วนบุคคล · ประเภท: ผสม (หุ้น + ตราสารหนี้) · อัปเดต: 18 มิ.ย. 2569</div>
+    </div>
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+      <button onclick="sendPrompt('ช่วยแนะนำวิธีปรับพอร์ตกองทุนนี้ให้ดีขึ้น')">ปรับพอร์ต ↗</button>
+      <button onclick="sendPrompt('สร้างรายงาน PDF สรุปกองทุนนี้ให้หน่อย')">ออกรายงาน ↗</button>
+    </div>
+  </div>
+</div>
+
+<div class="metrics-grid">
+  <div class="metric-card">
+    <div class="metric-label">ราคาหน่วย (NAV)</div>
+    <div class="metric-value">฿12.48</div>
+    <div class="metric-change up">▲ +0.18 (+1.46%) วันนี้</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-label">มูลค่าสินทรัพย์รวม (AUM)</div>
+    <div class="metric-value">฿24.8M</div>
+    <div class="metric-change up">▲ +฿362K เดือนนี้</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-label">จำนวนหน่วยทั้งหมด</div>
+    <div class="metric-value">1.99M</div>
+    <div class="metric-change" style="color:var(--color-text-secondary)">หน่วยลงทุน</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-label">ผู้ถือหน่วยทั้งหมด</div>
+    <div class="metric-value">6</div>
+    <div class="metric-change" style="color:var(--color-text-secondary)">ราย</div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-label">ผลตอบแทนรวม (YTD)</div>
+    <div class="metric-value up">+14.3%</div>
+    <div class="metric-change up">จากต้นปี 2569</div>
+  </div>
+</div>
+
+<div class="two-col">
+  <div class="card">
+    <div class="section-title">สัดส่วนการลงทุน</div>
+    <div style="position:relative; width:100%; height:200px; margin-bottom:12px;">
+      <canvas id="donutChart" role="img" aria-label="แผนภูมิวงกลมแสดงสัดส่วนการลงทุน: หุ้นไทย 40%, หุ้นต่างประเทศ 25%, ตราสารหนี้ 20%, อสังหาริมทรัพย์ 10%, เงินสด 5%">สัดส่วนการลงทุน: หุ้นไทย 40%, หุ้นต่างประเทศ 25%, ตราสารหนี้ 20%, อสังหาริมทรัพย์ 10%, เงินสด 5%</canvas>
+    </div>
+    <div class="legend-row"><span class="legend-name"><span class="legend-dot" style="background:#3266AD"></span>หุ้นไทย</span><span class="legend-pct">40%<span class="legend-val">฿9.92M</span></span></div>
+    <div class="legend-row"><span class="legend-name"><span class="legend-dot" style="background:#1D9E75"></span>หุ้นต่างประเทศ</span><span class="legend-pct">25%<span class="legend-val">฿6.20M</span></span></div>
+    <div class="legend-row"><span class="legend-name"><span class="legend-dot" style="background:#BA7517"></span>ตราสารหนี้</span><span class="legend-pct">20%<span class="legend-val">฿4.96M</span></span></div>
+    <div class="legend-row"><span class="legend-name"><span class="legend-dot" style="background:#7F77DD"></span>อสังหาริมทรัพย์</span><span class="legend-pct">10%<span class="legend-val">฿2.48M</span></span></div>
+    <div class="legend-row"><span class="legend-name"><span class="legend-dot" style="background:#888780"></span>เงินสด</span><span class="legend-pct">5%<span class="legend-val">฿1.24M</span></span></div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">ผลตอบแทนรายเดือน</div>
+    <div style="position:relative; width:100%; height:200px; margin-bottom:12px;">
+      <canvas id="lineChart" role="img" aria-label="กราฟผลตอบแทนรายเดือน ม.ค.–มิ.ย. 2569">ผลตอบแทน: ม.ค. +2.1%, ก.พ. +1.8%, มี.ค. -0.5%, เม.ย. +3.2%, พ.ค. +2.8%, มิ.ย. +1.5%</canvas>
+    </div>
+    <div style="display:flex; flex-wrap:wrap; gap:12px; font-size:12px; color:var(--color-text-secondary);">
+      <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#3266AD;margin-right:4px;"></span>กองทุนนี้</span>
+      <span><span style="display:inline-block;width:10px;height:2px;background:#888780;margin-right:4px;vertical-align:middle;border-top:2px dashed #888780;"></span>Benchmark (SET)</span>
+    </div>
+  </div>
+</div>
+
+<div class="two-col">
+  <div class="card">
+    <div class="section-title">ผู้ถือหน่วยลงทุน</div>
+    <div class="holder-row">
+      <div class="holder-avatar" style="background:#E6F1FB;color:#185FA5;">สว</div>
+      <div class="holder-info">
+        <div class="holder-name">สมชาย วงษ์ดี</div>
+        <div class="holder-units">450,000 หน่วย</div>
+      </div>
+      <div class="holder-value">
+        <div class="holder-amount">฿5.62M</div>
+        <div class="holder-pct">22.6%</div>
+      </div>
+    </div>
+    <div class="holder-row">
+      <div class="holder-avatar" style="background:#E1F5EE;color:#0F6E56;">กม</div>
+      <div class="holder-info">
+        <div class="holder-name">กนกวรรณ มีสุข</div>
+        <div class="holder-units">380,000 หน่วย</div>
+      </div>
+      <div class="holder-value">
+        <div class="holder-amount">฿4.74M</div>
+        <div class="holder-pct">19.1%</div>
+      </div>
+    </div>
+    <div class="holder-row">
+      <div class="holder-avatar" style="background:#EEEDFE;color:#534AB7;">พก</div>
+      <div class="holder-info">
+        <div class="holder-name">พิชัย กาญจนา</div>
+        <div class="holder-units">320,000 หน่วย</div>
+      </div>
+      <div class="holder-value">
+        <div class="holder-amount">฿3.99M</div>
+        <div class="holder-pct">16.1%</div>
+      </div>
+    </div>
+    <div class="holder-row">
+      <div class="holder-avatar" style="background:#FAEEDA;color:#854F0B;">อส</div>
+      <div class="holder-info">
+        <div class="holder-name">อรุณี สุขสม</div>
+        <div class="holder-units">270,000 หน่วย</div>
+      </div>
+      <div class="holder-value">
+        <div class="holder-amount">฿3.37M</div>
+        <div class="holder-pct">13.6%</div>
+      </div>
+    </div>
+    <div class="holder-row">
+      <div class="holder-avatar" style="background:#FAECE7;color:#993C1D;">ธน</div>
+      <div class="holder-info">
+        <div class="holder-name">ธนภัทร นาคดี</div>
+        <div class="holder-units">330,000 หน่วย</div>
+      </div>
+      <div class="holder-value">
+        <div class="holder-amount">฿4.12M</div>
+        <div class="holder-pct">16.6%</div>
+      </div>
+    </div>
+    <div class="holder-row">
+      <div class="holder-avatar" style="background:#F1EFE8;color:#5F5E5A;">อื่น</div>
+      <div class="holder-info">
+        <div class="holder-name">ผู้ถือรายอื่นๆ</div>
+        <div class="holder-units">240,000 หน่วย</div>
+      </div>
+      <div class="holder-value">
+        <div class="holder-amount">฿3.00M</div>
+        <div class="holder-pct">12.1%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">ประวัติราคา NAV ล่าสุด</div>
+    <table class="nav-table">
+      <thead>
+        <tr>
+          <th>วันที่</th>
+          <th style="text-align:right;">ราคา (฿)</th>
+          <th style="text-align:right;">เปลี่ยนแปลง</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>18 มิ.ย. 69</td><td style="text-align:right; font-weight:500;">12.48</td><td style="text-align:right;"><span class="badge badge-up">+1.46%</span></td></tr>
+        <tr><td>17 มิ.ย. 69</td><td style="text-align:right;">12.30</td><td style="text-align:right;"><span class="badge badge-up">+0.73%</span></td></tr>
+        <tr><td>16 มิ.ย. 69</td><td style="text-align:right;">12.21</td><td style="text-align:right;"><span class="badge badge-down">-0.24%</span></td></tr>
+        <tr><td>13 มิ.ย. 69</td><td style="text-align:right;">12.24</td><td style="text-align:right;"><span class="badge badge-up">+1.16%</span></td></tr>
+        <tr><td>12 มิ.ย. 69</td><td style="text-align:right;">12.10</td><td style="text-align:right;"><span class="badge badge-up">+0.83%</span></td></tr>
+        <tr><td>11 มิ.ย. 69</td><td style="text-align:right;">12.00</td><td style="text-align:right;"><span class="badge badge-down">-0.50%</span></td></tr>
+        <tr><td>10 มิ.ย. 69</td><td style="text-align:right;">12.06</td><td style="text-align:right;"><span class="badge badge-up">+0.25%</span></td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:1.5rem;">
+      <div class="section-title">ผลตอบแทนสะสม</div>
+      <div class="perf-bar-wrap">
+        <div class="perf-label"><span>1 เดือน</span><span class="up">+4.2%</span></div>
+        <div class="perf-track"><div class="perf-fill" style="width:42%; background:#3266AD;"></div></div>
+      </div>
+      <div class="perf-bar-wrap">
+        <div class="perf-label"><span>3 เดือน</span><span class="up">+8.7%</span></div>
+        <div class="perf-track"><div class="perf-fill" style="width:58%; background:#1D9E75;"></div></div>
+      </div>
+      <div class="perf-bar-wrap">
+        <div class="perf-label"><span>6 เดือน (YTD)</span><span class="up">+14.3%</span></div>
+        <div class="perf-track"><div class="perf-fill" style="width:72%; background:#7F77DD;"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+  const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+  const gridColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+  const textColor = isDark ? '#aaa' : '#666';
+
+  new Chart(document.getElementById('donutChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['หุ้นไทย','หุ้นต่างประเทศ','ตราสารหนี้','อสังหาริมทรัพย์','เงินสด'],
+      datasets: [{
+        data: [40, 25, 20, 10, 5],
+        backgroundColor: ['#3266AD','#1D9E75','#BA7517','#7F77DD','#888780'],
+        borderWidth: 2,
+        borderColor: isDark ? '#1a1a1a' : '#fff'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '62%',
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed}%` } } }
+    }
+  });
+
+  new Chart(document.getElementById('lineChart'), {
+    type: 'line',
+    data: {
+      labels: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.'],
+      datasets: [
+        {
+          label: 'กองทุนนี้',
+          data: [2.1, 1.8, -0.5, 3.2, 2.8, 1.5],
+          borderColor: '#3266AD',
+          backgroundColor: 'rgba(50,102,173,0.08)',
+          fill: true,
+          tension: 0.4,
+          pointRadius: 4,
+          pointBackgroundColor: '#3266AD',
+          borderDash: []
+        },
+        {
+          label: 'SET',
+          data: [1.4, 0.9, -1.2, 2.0, 1.9, 0.8],
+          borderColor: '#888780',
+          backgroundColor: 'transparent',
+          fill: false,
+          tension: 0.4,
+          pointRadius: 3,
+          pointBackgroundColor: '#888780',
+          borderDash: [5, 4]
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: textColor, font: { size: 11 } }, grid: { color: gridColor } },
+        y: { ticks: { color: textColor, font: { size: 11 }, callback: v => v.toFixed(1) + '%' }, grid: { color: gridColor } }
+      }
+    }
+  });
+</script>
